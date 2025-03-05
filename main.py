@@ -4,6 +4,8 @@ import pygame
 from player import Player
 from obsticle import Obsticle
 from coin import Coin
+from o import speed
+import o
 
 pygame.init()
 
@@ -16,7 +18,7 @@ p = Player()
 ob = [Obsticle(random.randrange(0, pygame.display.get_surface().get_size()[0]), 0) for i in range(10)]
 co = []
 coin = 0
-
+font = pygame.font.Font(None, 40)
 time_start = time.perf_counter()
 running = True
 while running:
@@ -53,7 +55,7 @@ while running:
         if not co[i].col:
             del co[i]
             coin += 1
-        elif not co[i].v:
+        elif not co[i].ac:
             del co[i]
 
     for i in range(len(co)):
@@ -62,10 +64,12 @@ while running:
     for i in range(len(ob)):
         ob[i].update(p)
 
-    if time_update - time_start > 5:
+    if time_update - time_start > o.time0:
         for _ in range(3):
             ob.append(Obsticle(random.randrange(0, pygame.display.get_surface().get_size()[0]), 0))
-        time_start += 5
+        time_start += o.time0
+        o.speed += 250
+        o.time0 *= 0.98
 
     if p.l <= 0:
         running = False
@@ -73,5 +77,9 @@ while running:
     for i in range(len(ob)):
         ob[i].draw(screen)
 
+
+
+    text = font.render(f'coins: {coin}', True, (0, 0, 0))
+    screen.blit(text, (20, 10))
     print(len(ob))
     pygame.display.flip()

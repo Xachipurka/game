@@ -1,28 +1,23 @@
-
+from o import Object
 import pygame
 from player import Player
 
 
-class Coin:
+class Coin(Object):
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        super().__init__(x, y)
         self.xr = 30
         self.yr = 30
         self.col = True
-        self.v = True
+        self.color = (255, 255, 20)
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, (255, 255, 20), (self.x, self.y, self.xr, self.yr))
 
-    def update(self, player):
         # should be called in main
-        self.y += 5
+    def update(self, player):
+        super().update()
         if do_overlap((self.x, self.y), (self.x + self.xr, self.y + self.yr),
                       (player.x, player.y), (player.x + player.xr, player.y + player.yr)):
             self.col = False
-        if self.y >= pygame.display.get_surface().get_size()[1]:
-            self.v = False
 
 
 

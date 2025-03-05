@@ -1,25 +1,22 @@
 import random
 import pygame
+from o import Object
 from player import Player
-class Obsticle:
+
+class Obsticle(Object):
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.xr = 100
-        self.yr = 100
-        self.ac = True
-    def draw(self, screen):
-        pygame.draw.rect(screen, (70, 70, 70), (self.x, self.y, self.xr, self.yr))
+        super().__init__(x, y)
+
+        self.color = (70, 70, 70)
 
     def update(self, player):
         # should be called in main
-        self.y += 5
+        super().update()
         if do_overlap((self.x, self.y), (self.x + self.xr, self.y + self.yr),
                       (player.x, player.y), (player.x + player.xr, player.y + player.yr)):
             print("Life --")
             player.l -= 1
-        if self.y >= pygame.display.get_surface().get_size()[1]:
-            self.ac = False
+
     def touch(self, event):
         if event.type == pygame.MOUSEBUTTONUP:  # or MOUSEBUTTONDOWN for presses
             x, y = event.pos
