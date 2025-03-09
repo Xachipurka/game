@@ -2,8 +2,9 @@ import random
 import time
 import pygame
 from player import Player
-from obsticle import Obsticle
+from obsticle import Obsticle, add_obsticle
 from coin import Coin
+
 from o import speed
 import o
 
@@ -11,11 +12,13 @@ pygame.init()
 
 
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
-background_color = (255, 255, 255)  # Белый цвет
+bg = (180, 180, 180)  # Белый цвет
 
 p = Player()
 #o = Obsticle()
-ob = [Obsticle(random.randrange(0, pygame.display.get_surface().get_size()[0]), 0) for i in range(10)]
+ob = []
+for i in range(10):
+    add_obsticle(ob)
 co = []
 coin = 0
 font = pygame.font.Font(None, 40)
@@ -45,8 +48,9 @@ while running:
     if keys[pygame.K_d]:
         p.right()
         # Add your logic for moving right here
-    screen.fill((255, 255, 255))
+    screen.fill(bg)
 
+    pygame.draw.rect(screen, (50, 50, 50), (0, p.y + 25, 9999999, 500))
     p.draw(screen)
     time_update = time.perf_counter()
 
@@ -64,11 +68,14 @@ while running:
     for i in range(len(ob)):
         ob[i].update(p)
 
+    for i in range(len(ob)):
+        ob[i].draww(screen)
+
     if time_update - time_start > o.time0:
         for _ in range(3):
-            ob.append(Obsticle(random.randrange(0, pygame.display.get_surface().get_size()[0]), 0))
+            add_obsticle(ob)
         time_start += o.time0
-        o.speed += 250
+        o.speed += 100
         o.time0 *= 0.98
 
     if p.l <= 0:

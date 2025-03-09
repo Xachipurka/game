@@ -3,11 +3,31 @@ import pygame
 from o import Object
 from player import Player
 
+def add_obsticle(ob):
+    obi = Obsticle(0, 0)
+    obi.x  = random.randrange(0, pygame.display.get_surface().get_size()[0] - obi.xr)
+    #obi = Obsticle(random.randrange(0, pygame.display.get_surface().get_size()[0] - obiiiiiii.x), 0)
+    ohoho = True
+    for i in range(len(ob)):
+        if do_overlap((obi.x, obi.y), (obi.x + obi.xr, obi.y + obi.yr),
+                    (ob[i].x, ob[i].y), (ob[i].x + ob[i].xr, ob[i].y + ob[i].yr)):
+            add_obsticle(ob)
+            ohoho = False
+            break
+    if ohoho:
+        ob.append(obi)
+
+
+
+
+
 class Obsticle(Object):
     def __init__(self, x, y):
         super().__init__(x, y)
-
+        self.lives = 3
+        self.live = 3
         self.color = (70, 70, 70)
+        self.xrp = self.xr - 25
 
     def update(self, player):
         # should be called in main
@@ -21,9 +41,25 @@ class Obsticle(Object):
         if event.type == pygame.MOUSEBUTTONUP:  # or MOUSEBUTTONDOWN for presses
             x, y = event.pos
             if pygame.Rect(self.x, self.y, self.xr, self.yr).collidepoint(x, y):
-                self.ac = False
+                self.live -= 1
+                '''
+                oh = self.live / self.lives
+                l2 = oh * self.live
+                self.sh = l2
+                '''
+                if self.live == 0:
+                    self.ac = False
+
+    def draww(self, screen):
+        super().draw(screen)
+        if self.live != self.lives:
+            pygame.draw.rect(screen, (0, 0, 0,), (self.x, self.y - 35, self.xr, 20 + 10))
+            pygame.draw.rect(screen, (255 - 255 *(self.live/self.lives), 255*(self.live/self.lives), 0),
+                         (self.x + 5, self.y - 30, (self.xr - 10) * (self.live / self.lives), 20))
 
 
+
+# написать код который рисует шкалу
 
 
 def do_overlap(l1, r1, l2, r2):
