@@ -1,7 +1,8 @@
 import time
 import pygame
 speed = 100
-time0 = 5
+ispeed = 100
+spawn_delay = 5
 class Object:
     def __init__(self, x, y):
         self.x = x

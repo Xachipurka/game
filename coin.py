@@ -17,8 +17,10 @@ class Coin(Object):
         super().update()
         if do_overlap((self.x, self.y), (self.x + self.xr, self.y + self.yr),
                       (player.x, player.y), (player.x + player.xr, player.y + player.yr)):
-            self.col = False
+            self.collect()
 
+    def collect(self):
+        self.col = False
 
 
 def do_overlap(l1, r1, l2, r2):

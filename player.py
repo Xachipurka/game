@@ -1,5 +1,5 @@
 import pygame
-
+xs = 5
 
 class Player:
     def __init__(self):
@@ -14,8 +14,8 @@ class Player:
 
     def left(self):
         if self.x > 0:
-            self.x -= 5
+            self.x -= xs
 
     def right(self):
         if self.x < self.screen[0] - self.xr:
-            self.x += 5
+            self.x += xs

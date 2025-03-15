@@ -4,7 +4,8 @@ import pygame
 from player import Player
 from obsticle import Obsticle, add_obsticle
 from coin import Coin
-
+from special_coin import Special_coin
+from special_coinr import Special_coinr
 from o import speed
 import o
 
@@ -15,11 +16,11 @@ screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 bg = (180, 180, 180)  # Белый цвет
 
 p = Player()
-#o = Obsticle()
 ob = []
 for i in range(10):
     add_obsticle(ob)
 co = []
+
 coin = 0
 font = pygame.font.Font(None, 40)
 time_start = time.perf_counter()
@@ -35,10 +36,13 @@ while running:
                 xo = ob[i].x
                 yo = ob[i].y
                 del ob[i]
-                #                if random.randrange(1, 4) == 3:
-                co.append(Coin(xo, yo))
-
-
+                if random.randrange(1, 4) == 2:
+                    co.append(Special_coin(xo, yo))
+                else:
+                    if random.randrange(1, 3) == 1:
+                        co.append(Special_coinr(xo, yo))
+                    else:
+                        co.append(Coin(xo, yo))
     keys = pygame.key.get_pressed()
 
     # Check for specific keys
@@ -71,12 +75,12 @@ while running:
     for i in range(len(ob)):
         ob[i].draww(screen)
 
-    if time_update - time_start > o.time0:
+    if time_update - time_start > o.spawn_delay:
         for _ in range(3):
             add_obsticle(ob)
-        time_start += o.time0
-        o.speed += 100
-        o.time0 *= 0.98
+        time_start += o.spawn_delay
+        o.speed += o.ispeed
+        o.spawn_delay *= 0.99999
 
     if p.l <= 0:
         running = False
